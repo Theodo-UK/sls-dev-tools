@@ -12,7 +12,7 @@ import {
   getStackResources,
   getLambdaFunctions,
 } from "../services";
-import ServerlessConfigParser from "../services/severlessConfigParser/serverlessConfigParser";
+import ServerlessConfig from "../services/severlessConfig/serverlessConfig";
 
 const infoLog = chalk.greenBright;
 const titleLog = chalk.greenBright.underline.bold;
@@ -20,7 +20,7 @@ const fail = chalk.redBright;
 const failTitleLog = chalk.redBright.underline.bold;
 
 class GuardianCI {
-  constructor(program) {
+  constructor(program, config) {
     AWS.config.credentials = getAWSCredentials(program.profile, program);
     if (program.region) {
       AWS.config.region = program.region;
@@ -57,7 +57,7 @@ class GuardianCI {
       this.ignoreConfig = this.config.ignore;
     }
 
-    this.SLS = new ServerlessConfigParser(program);
+    this.SLS = new ServerlessConfig(config);
   }
 
   async getAllLambdaFunctions() {
